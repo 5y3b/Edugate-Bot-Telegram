@@ -1,0 +1,11 @@
+# unnecessary files
+session_data/
+__pycache__/
+temp_data/
+.venv/
+data/
+
+*.env
+*.pyc
+*.bat
+*.log
