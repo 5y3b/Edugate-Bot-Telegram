@@ -70,15 +70,13 @@ class TeleSession(telebot.TeleBot):
                              'please go to /data/telegram_bot.env and fix it.')
         super().__init__(token, *args, **kwargs)
         
-            
-            
-            
         self.__active_users = {}
         self.__errorLogger = Logger('ErroLogger', 'errorlogs.log', paths.infologs_folder)
         self.__infoLogger = Logger(self.__class__.__name__, logs_folder=paths.infologs_folder)
         self.__userLogger = Logger('userLogger', 'userlogs.log', paths.userlogs_folder)
 
         self.is_polling = True
+        self.__stop_event = threading.Event()
         self.polling_thread = None
 
         # loading favorites / path will always exist
@@ -92,6 +90,7 @@ class TeleSession(telebot.TeleBot):
     def start(self):
         """Starts the telegram session and starts listening for messages"""
         self.is_polling = True
+        self.__stop_event.clear()
         
         self.message_handler(commands=['start'])(self.__START)
         self.message_handler(commands=['help'])(self.__HELP)
@@ -107,7 +106,9 @@ class TeleSession(telebot.TeleBot):
             
                
     def stop(self):
+        """Stops the telegram session and stops listening for messages"""
         self.is_polling = False
+        self.__stop_event.set()
         self.stop_polling()
         self.__active_users.clear()
         self.__session.close()
@@ -349,7 +350,7 @@ class TeleSession(telebot.TeleBot):
             This method is called when creating a thread 
             to start polling the bot
         """
-        while self.is_polling:
+        while not self.__stop_event.is_set():
             try:
                 self.polling(none_stop=True, long_polling_timeout=0)
             except Exception as e:

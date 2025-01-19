@@ -1,4 +1,5 @@
 from load_dotenv import load_dotenv
+from time import sleep
 from os import getenv
 
 from packages.telegram_bot import TeleSession
@@ -11,9 +12,13 @@ TELE_TOKEN = getenv('TELE_TOKEN')
 
 
 a = TeleSession(TELE_TOKEN)
-try:      
-    a.start()
+
+
+a.start()
+try:
+    input("Enter anything to stop\n")
+    a.stop()
 except KeyboardInterrupt as e:
-    print(f"Stopping bot...")
+    print("Keyboard Interrupt, stopping")
     a.stop()
     

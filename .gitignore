@@ -2,6 +2,7 @@
 session_data/
 __pycache__/
 temp_data/
+.vscode/
 .venv/
 data/
 
