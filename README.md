@@ -9,7 +9,7 @@ This project is a Telegram bot that interacts with users to provide information 
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/5y3b/Edugate-Telegram-Bot.git
+    git clone https://github.com/5y3b/Edugate-Bot-Telegram.git
     ```
 
 2. Install the required dependencies:
